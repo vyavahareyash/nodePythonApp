@@ -20,7 +20,7 @@ app.post('/', function(req, res) {
 
     var dataToSend;
     // spawn new child process to call the python script
-    const python = spawn('python', [path.join(__dirname, 'script1.py'), number]);
+    const python = spawn('python', ['public/script1.py', number]);
     // collect data from script
     python.stdout.on('data', function(data) {
         console.log('Pipe data from python script ...');
