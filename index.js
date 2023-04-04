@@ -1,4 +1,5 @@
 const express = require('express')
+const path = require('path')
 const { spawn } = require('child_process');
 const bodyParser = require('body-parser')
 const app = express()
@@ -19,7 +20,7 @@ app.post('/', function(req, res) {
 
     var dataToSend;
     // spawn new child process to call the python script
-    const python = spawn('python3', [__dirname + 'script1.py', number]);
+    const python = spawn('python', [path.join(__dirname, 'script1.py'), number]);
     // collect data from script
     python.stdout.on('data', function(data) {
         console.log('Pipe data from python script ...');
