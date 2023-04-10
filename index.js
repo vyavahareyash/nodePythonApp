@@ -1,19 +1,88 @@
-const express = require('express')
-const path = require('path')
+const express = require('express');
+// const path = require('path')
 var request = require('request');
-const { spawn } = require('child_process');
-const bodyParser = require('body-parser')
-const app = express()
-const port = 3000
+// const { spawn } = require('child_process');
+const bodyParser = require('body-parser');
+// const fileUpload = require('express-fileupload');
+const mongoose = require('mongoose');
+const url = 'mongodb+srv://yash:yash@cluster0.kdb13b7.mongodb.net';
+const dbName = 'deploymentModels';
+const multer = require('multer');
+const ImageModel = require("./image.model");
+const app = express();
+const port = 3000;
 
+mongoose.connect(url + '/' + dbName, { useNewUrlParser: true }).then(() => console.log("DB is connected.")).catch((err) => console.log(err, "it has an error"));
 
+// const imageSchema = new mongoose.Schema({
+//     id: Number,
+//     data: String,
+// });
+
+// const Image = mongoose.model('Image', imageSchema);
+
+// app.use(fileUpload());
 app.set("view engine", "ejs");
-app.use(express.static("public"))
-app.use(bodyParser.urlencoded({ extended: true }))
+app.use(express.static("public"));
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
+const Storage = multer.diskStorage({
+    destination: 'uploadedImages',
+    filename: (req, file, cb) => {
+        cb(null, file.originalname);
+    }
+});
+
+const upload = multer({
+    storage: Storage
+}).single('testImage');
 
 app.get('/', function(req, res) {
     res.sendFile(__dirname + "/signup.html");
 })
+
+app.get('/image', (req, res) => {
+    res.sendFile(__dirname + "/index.html");
+});
+
+
+app.post('/upload', (req, res) => {
+    // Log the files to the console
+    // const data = JSON.stringify(req.files.image.data);
+    // res.send(data);
+    // console.log(data);
+
+    // const image = new Image({
+    // id: 55,
+    // data: data
+    // });
+
+    // image.save()
+
+    // All good
+    // res.sendStatus(200);
+    ///////////////////////////////////////////////////////////////////
+
+    upload(req, res, (err) => {
+        // res.send(req.body.name);
+        console.log(req.body);
+        if (err) {
+            console.log("ERROR:\n" + err)
+        } else {
+            const newImage = new ImageModel({
+                name: req.body.name,
+                image: {
+                    data: req.file.filename,
+                    contentType: 'image'
+                }
+            });
+            // newImage.save()
+            //     .then(() => res.send('successfully uploaded image'))
+            //     .catch((err) => console.log(err));
+        }
+    })
+});
 
 // app.post('/', function(req, res) {
 
