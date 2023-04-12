@@ -36,7 +36,7 @@ app.post('/imageUpload', async(req, res) => {
         const uploadParams = {
             Bucket: bucketName,
             Body: fileContent,
-            Key: 'finaltest.png'
+            Key: 'testupload.png'
         }
 
         return s3.upload(uploadParams).promise()
