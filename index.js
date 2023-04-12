@@ -36,7 +36,7 @@ const Storage = multer.diskStorage({
 
 const upload = multer({
     storage: Storage
-}).single('testImage');
+});
 
 app.get('/', function(req, res) {
     res.sendFile(__dirname + "/signup.html");
@@ -47,7 +47,7 @@ app.get('/image', (req, res) => {
 });
 
 
-app.post('/upload', (req, res) => {
+app.post('/upload', upload.single('yash'), (req, res) => {
     // Log the files to the console
     // const data = JSON.stringify(req.files.image.data);
     // res.send(data);
@@ -64,24 +64,24 @@ app.post('/upload', (req, res) => {
     // res.sendStatus(200);
     ///////////////////////////////////////////////////////////////////
 
-    upload(req, res, (err) => {
-        // res.send(req.body.name);
-        console.log(req.body);
-        if (err) {
-            console.log("ERROR:\n" + err)
-        } else {
-            const newImage = new ImageModel({
-                name: req.body.name,
-                image: {
-                    data: req.file.filename,
-                    contentType: 'image'
-                }
-            });
-            // newImage.save()
-            //     .then(() => res.send('successfully uploaded image'))
-            //     .catch((err) => console.log(err));
+    // upload(req, res, (err) => {
+    //     // res.send(req.body.name);
+    //     console.log(req.body);
+    //     if (err) {
+    //         console.log("ERROR:\n" + err)
+    //     } else {
+    const newImage = new ImageModel({
+        name: req.file.originalname,
+        image: {
+            data: req.file.filename,
+            contentType: 'image'
         }
-    })
+    });
+    newImage.save()
+        .then(() => res.send('successfully uploaded image'))
+        .catch((err) => console.log(err));
+    //     }
+    // })
 });
 
 // app.post('/', function(req, res) {
