@@ -48,7 +48,8 @@ app.post('/imageUpload', async(req, res) => {
     // Setting up S3 upload parameters
 
     // Uploading files to the bucket
-    uploadFile(fileContent).then(() => console.log('done'));
+    uploadFile(fileContent);
+    res.send('ok')
 
 
 })
