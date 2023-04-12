@@ -36,7 +36,7 @@ app.post('/imageUpload', async(req, res) => {
         const uploadParams = {
             Bucket: bucketName,
             Body: fileContent,
-            Key: 'testupload.png'
+            Key: filename
         }
 
         return s3.upload(uploadParams).promise()
@@ -44,11 +44,12 @@ app.post('/imageUpload', async(req, res) => {
 
     // Binary data base64
     const fileContent = Buffer.from(req.files.image.data, 'binary');
+    const filename = req.files.image.name;
 
     // Setting up S3 upload parameters
 
     // Uploading files to the bucket
-    uploadFile(fileContent).then(() => res.send('ok'));
+    uploadFile(fileContent, filename).then(() => res.send('ok'));
 
 
 
