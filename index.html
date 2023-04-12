@@ -1,5 +1,13 @@
-<!DOCTYPE html>
-<form action="/upload" method="POST" enctype="multipart/form-data">
-    <input type="file" id="testImage" name="yash" />
-    <button type="submit">Upload</button>
-</form>
+<html>
+
+<body>
+    <form method="POST" action="/imageUpload" enctype="multipart/form-data">
+        <div class="field">
+            <label for="image">Image Upload</label>
+            <input type="file" name="image" id="image">
+        </div>
+        <input type="submit" class="btn" value="Save">
+    </form>
+</body>
+
+</html>
