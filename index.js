@@ -45,7 +45,7 @@ app.post('/imageUpload', async(req, res) => {
 
     // Binary data base64
     const fileContent = Buffer.from(req.files.image.data, 'binary');
-    const filename = req.files.image.name;
+    global.filename = req.files.image.name;
 
     // Setting up S3 upload parameters
 
@@ -67,7 +67,7 @@ app.get('/show', async(req, res) => {
         const data = s3
             .getObject({
                 Bucket: bucketName,
-                Key: "cat.png",
+                Key: filename,
             })
             .promise();
         return data;
